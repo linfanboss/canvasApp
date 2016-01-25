@@ -89,7 +89,7 @@ function calLineWidth(distance,time){
 	var maxlineWidth = 30;
 	var minLineWidth = 1;
 	var maxSpeed = 10;
-	var minSpeed = 1;
+	var minSpeed = 0.1;
 
 	var speed = distance/time;
 	var result = 0;
