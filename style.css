@@ -1,0 +1,67 @@
+#canvas{
+	display: block;
+	margin :0 auto;
+}
+#bottom{
+	margin: 0 auto;
+	margin-top: 5px;
+}
+#clearBtn{
+	float: right;
+	width: 50px;
+	height: 46px;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: Microsoft Yahei,Arial;
+}
+
+#clearBtn:hover {
+    background-color: #def;
+}
+
+.clearfix{
+	clear: both;
+}
+
+.color{
+	width: 40px;
+	height: 40px;
+	float: left;
+	margin-right: 10px;
+	cursor: pointer;
+	border: 3px solid white;
+	border-radius: 5px;
+}
+.color:hover{
+	border: 3px solid violet;
+}
+.color_select{
+	border: 3px solid blueviolet;
+}
+
+#blackBtn.color{
+	background-color: black;
+}
+
+#blueBtn.color{
+	background-color: blue;
+}
+
+#greenBtn.color{
+	background-color: green;
+}
+
+#redBtn.color{
+	background-color: red;
+}
+
+#orangeBtn.color{
+	background-color: orange;
+}
+
+#yellowBtn.color{
+	background-color: yellow;
+}
