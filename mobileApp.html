@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>列车时刻表查询</title>
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	<style type="text/css">
+		tr{
+			border-bottom: 1px solid lightgray;
+		}
+	</style>
+	<script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+	<!-- 	Uncaught SecurityError: Failed to execute 'replaceState' on 'History': A history state object with URL 'file:///C:/Users/newland/Desktop/demos/mobileApp.html' cannot be created in a document with origin 'null'. 以下脚本在jquery.mobile.min.js加载之前加载，解决chrome会出现的以上问题-->
+	<script>
+	    $(document).bind('mobileinit',function(){
+	        $.mobile.changePage.defaults.changeHash = false;
+	        $.mobile.hashListeningEnabled = false;
+	        $.mobile.pushStateEnabled = false;
+	    });
+	</script> 
+	<script src="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+	<div id="index" data-role="page">
+		<div data-role="header" data-position="fixed">
+			<h1>列车时刻表查询</h1>
+		</div>
+		<div data-role="main" class="ui-content">
+			<form method="post" action="demoform.php">
+			  <div class="ui-field-contain">
+			    <label for="start">发车站:</label>
+			    <input type="text" name="start" id="start" data-clear-btn="true">
+			  </div>
+			  <div class="ui-field-contain">
+			    <label for="end">终点站:</label>
+			    <input type="text" name="end" id="end" data-clear-btn="true">
+			  </div>
+			  <div class="ui-field-contain">
+			    <label for="num">车次:</label>
+			    <input type="text" name="num" id="num" data-clear-btn="true">
+			  </div>
+			</form>
+			<a href="#" id="queryList" class="ui-btn" data-role="button">查询</a>
+		    <ul data-role="listview" data-inset="true">
+		      <li>
+		        <a href="#">
+		        <h2>Google Chrome</h2>
+		        <p>Google Chrome 是免费的开源 web 浏览器。发布于 2008 年。</p>
+		        </a>
+		      </li>
+		      <li>
+		        <a href="#">
+		        <h2>Mozilla Firefox</h2>
+		        <p>Firefox 是来自 Mozilla 的 web 浏览器。发布于 2004 年。</p>
+		        </a>
+		      </li>
+		    </ul>
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#" data-icon="home">主页</a></li>
+					<li><a href="#" data-icon="heart">收藏</a></li>
+					<li><a href="#" data-icon="gear">设置</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div id="detail" data-role="page">
+		<div data-role="header" data-position="fixed">
+			<h1>列车时刻表查询</h1>
+		</div>
+		<div data-role="main" class="ui-content">
+			<h1></h1>
+			<table data-role="table" class="ui-responsive">
+				<thead>
+					<tr>
+						<th>列一</th>
+						<th>列二</th>
+						<th>列三</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>132</td>
+						<td>132</td>
+						<td>132</td>
+					</tr>
+					<tr>
+						<td>132</td>
+						<td>132</td>
+						<td>132</td>
+					</tr>
+				</tbody>
+			</table>
+			<a href="#index" class="ui-btn">返回</a>
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#" data-icon="home">主页</a></li>
+					<li><a href="#" data-icon="heart">收藏</a></li>
+					<li><a href="#" data-icon="gear">设置</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var proxySite = "https://crossorigin.me/";
+		var getListByNumURL = "http://www.webxml.com.cn/WebServices/TrainTimeWebService.asmx/getStationAndTimeDataSetByLikeTrainCode";//?TrainCode=string&UserID=string"
+		var getListByNameURL = "http://www.webxml.com.cn/WebServices/TrainTimeWebService.asmx/getStationAndTimeByStationName";//?StartStation=string&ArriveStation=string&UserID=string
+		var getDetailURL = "http://www.webxml.com.cn/WebServices/TrainTimeWebService.asmx/getDetailInfoByTrainCode";//?TrainCode=string&UserID=string";
+
+		//pageinit	1.4.0 版本后已废弃，使用 pagecreate 替代。在页面页面初始化时，触发的事件。
+		$(document).on('pagecreate','#index',function(){
+			bindEvent();
+		});
+		function bindEvent(){
+			getList();
+			getDetail();
+		}
+		function getList(){
+			$("#queryList").on('click',function(){
+				var flag = false;
+				var numVal = $("#num").val();
+				var startVal = $("#start").val();
+				var endVal = $("#end").val();
+				var param = {};
+				var url = "";
+				if(numVal && !startVal && !endVal){
+					flag = true;
+					param = {
+						TrainCode : numVal,
+						UserID : ''
+					};
+					url = proxySite + getListByNumURL;
+				}else if(startVal && endVal && !numVal){
+					flag = true;
+					param = {
+						StartStation : startVal,
+						ArriveStation : endVal,
+						UserID : ''
+					};
+					url = proxySite + getListByNameURL;
+				}else{
+					alert("请使用列车号查询或者车站起始与终点站名称查询！");
+					return false;
+				}
+				if(flag){
+					$.mobile.loading("show");
+					$(this).attr('disabled','disabled');
+					$.get(url,param,function(data){
+						console.log(data);
+						$.mobile.loading("hide");
+					});
+				}
+			});
+			
+		}
+		function getDetail(){
+
+		}
+
+	</script>
+</body>
+</html>
